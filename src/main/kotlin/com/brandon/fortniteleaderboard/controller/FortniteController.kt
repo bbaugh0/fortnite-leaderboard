@@ -16,7 +16,7 @@ class FortniteController(
     var leaderboardService: FortniteLeaderboardService
 ) {
 
-    @GetMapping("/getSoloStats")
+    @GetMapping
     fun getSoloStats(@RequestParam id: String): ResponseEntity<GameModeStats> {
         return ResponseEntity.ok(leaderboardService.getSoloStats(id))
     }
