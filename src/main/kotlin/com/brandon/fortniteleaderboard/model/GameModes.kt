@@ -16,16 +16,16 @@ data class GameModes(
     var limitedTimeMode: GameModeModel,
 
     @JsonProperty("curr_p2")
-    var currentSolos: GameModeModel,
+    var currentSolos: GameModeModel?,
 
     @JsonProperty("curr_p10")
-    var currentDuos: GameModeModel,
+    var currentDuos: GameModeModel?,
 
     @JsonProperty("curr_trios")
-    var currentTrios: GameModeModel,
+    var currentTrios: GameModeModel?,
 
     @JsonProperty("curr_p9")
-    var currentSquads: GameModeModel,
+    var currentSquads: GameModeModel?,
 
     var trios: GameModeModel
 

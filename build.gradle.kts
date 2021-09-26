@@ -1,14 +1,29 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+	id("com.microsoft.azure.azurewebapp") version "1.1.0"
 	id("org.springframework.boot") version "2.5.5"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	kotlin("jvm") version "1.5.31"
 	kotlin("plugin.spring") version "1.5.31"
 }
 
+azurewebapp {
+	subscription = "afaf78e2-b755-41b3-92be-c1ad9843e833"
+	resourceGroup = "FortniteGroup"
+	appName = "Fortnite-Leaderboard"
+	pricingTier = "B1"
+	region = "eastus"
+	setRuntime(closureOf<com.microsoft.azure.gradle.configuration.GradleRuntimeConfig> {
+		os("Linux")
+		webContainer("Java SE")
+		javaVersion("Java 11")
+	})
+}
+
 group = "com.brandon"
 version = "0.0.1-SNAPSHOT"
+
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 configurations {

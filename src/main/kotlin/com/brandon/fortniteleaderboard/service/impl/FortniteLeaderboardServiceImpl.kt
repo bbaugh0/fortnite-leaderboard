@@ -16,6 +16,7 @@ class FortniteLeaderboardServiceImpl(
     override fun getSoloStats(id: String): GameModeStats {
         val model = client.getPlayerStats(id)!!
         return GameModeStats(
+            "Stats for $id:",
             model.stats.solos.score.valueInt,
             model.stats.solos.kills.valueInt,
             model.stats.solos.top1.valueInt,
@@ -23,6 +24,11 @@ class FortniteLeaderboardServiceImpl(
             model.stats.solos.kpm.value.toDouble(),
             model.stats.solos.kpg.value.toDouble()
         )
+    }
+
+    override fun getSoloStringStats(id: String): String {
+        val model = client.getPlayerStats(id)!!
+        return "$id has ${model.stats.solos.kills.valueInt} kills and ${model.stats.solos.top1.valueInt} wins in solos"
     }
 
 }

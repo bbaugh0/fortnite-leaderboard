@@ -7,4 +7,6 @@ interface FortniteLeaderboardService {
      * Returns game mode stats for solos
      */
     fun getSoloStats(id: String): GameModeStats
+
+    fun getSoloStringStats(id: String): String
 }
