@@ -40,7 +40,7 @@ class FortniteLeaderboardServiceImpl(
     }
 
     private fun getAllPlayerStats(): List<FortniteModel?> {
-        return gamertags.parallelStream().map{ value ->  client.getPlayerStats(value) }.toList()
+        return gamertags.parallelStream().map{ value ->  client.getPlayerStats(value) }.collect(Collectors.toList())
     }
 
     override fun getSoloLeaderboardStats(): List<GameModeStats> {
