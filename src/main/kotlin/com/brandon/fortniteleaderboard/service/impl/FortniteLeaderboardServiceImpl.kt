@@ -44,30 +44,43 @@ class FortniteLeaderboardServiceImpl(
     }
 
     override fun getSoloLeaderboardStats(): List<GameModeStats> {
-        var dtos = getAllPlayerStats().parallelStream().map { value ->
-            GameModeStats(
-                value!!.epicUserHandle,
-                value.stats.solos.score.valueInt,
-                value.stats.solos.kills.valueInt,
-                value.stats.solos.top1.valueInt,
-                value.stats.solos.matches.valueInt,
-                value.stats.solos.kpm.value.toDouble(),
-                value.stats.solos.kpg.value.toDouble(),
-                "Solos"
-            )
-        }.toList()
-       dtos =  dtos.stream().sorted { o1, o2 ->  o2.wins.compareTo(o1.wins)}.toList()
+        try {
+            var dtos = getAllPlayerStats().parallelStream().map { value ->
+                GameModeStats(
+                    value!!.epicUserHandle,
+                    value.stats.solos.score.valueInt,
+                    value.stats.solos.kills.valueInt,
+                    value.stats.solos.top1.valueInt,
+                    value.stats.solos.matches.valueInt,
+                    value.stats.solos.kpm.value.toDouble(),
+                    value.stats.solos.kpg.value.toDouble(),
+                    "Solos"
+                )
+            }.toList()
+            dtos = dtos.stream().sorted { o1, o2 -> o2.wins.compareTo(o1.wins) }.toList()
 
-        var i = 1
-        for (stats: GameModeStats in dtos) {
-            when(stats.id) {
-                "Wiscostyle" -> stats.id = "MAK DEM PAY"
-                "OGwiscoMurk1n" -> stats.id = "LAZERS KILL"
+            var i = 1
+            for (stats: GameModeStats in dtos) {
+                when (stats.id) {
+                    "Wiscostyle" -> stats.id = "MAK DEM PAY"
+                    "OGwiscoMurk1n" -> stats.id = "LAZERS KILL"
+                }
+                stats.id = "Rank $i: ${stats.id}"
+                i++
             }
-            stats.id = "Rank $i: ${stats.id}"
-            i++
+            return dtos
+        } catch (e: Exception) {
+            return mutableListOf(GameModeStats (
+                e.printStackTrace().toString(),
+                5,
+                5,
+                5,
+                5,
+                5.0,
+                5.0,
+                "5",
+                    ))
         }
-        return dtos
     }
 
 }
