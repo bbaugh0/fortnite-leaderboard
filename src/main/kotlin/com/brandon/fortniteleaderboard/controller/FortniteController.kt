@@ -1,6 +1,7 @@
 package com.brandon.fortniteleaderboard.controller
 
 import com.brandon.fortniteleaderboard.dto.GameModeStats
+import com.brandon.fortniteleaderboard.model.FortniteModel
 import com.brandon.fortniteleaderboard.service.FortniteLeaderboardService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -13,6 +14,11 @@ class FortniteController(
     @Autowired
     var leaderboardService: FortniteLeaderboardService
 ) {
+
+    @GetMapping("/getSoloLeaderboards")
+    fun getAllPlayerStats(): ResponseEntity<List<GameModeStats>> {
+        return ResponseEntity.ok(leaderboardService.getSoloLeaderboardStats())
+    }
 
     @GetMapping
     fun getSoloStats(@RequestParam id: String): ResponseEntity<GameModeStats> {

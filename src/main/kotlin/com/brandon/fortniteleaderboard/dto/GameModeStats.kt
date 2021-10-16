@@ -7,5 +7,6 @@ data class GameModeStats(
     var wins: Int,
     var matches: Int,
     var killsPerMinute: Double,
-    var killsPerGame: Double
+    var killsPerGame: Double,
+    var gameModeType: String
 )
