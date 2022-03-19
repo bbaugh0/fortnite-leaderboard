@@ -3,6 +3,7 @@ package com.brandon.fortniteleaderboard.client
 import com.brandon.fortniteleaderboard.model.FortniteModel
 import lombok.extern.java.Log
 import lombok.extern.slf4j.Slf4j
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
@@ -21,10 +22,11 @@ class FortniteApiClient (
         .defaultHeader("TRN-Api-Key", "f8af0c8f-ca06-45d2-88fc-e318d826db2d")
         .build()
         ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @Cacheable(cacheNames = ["responses"], key = "#id")
     fun getPlayerStats(id: String): FortniteModel? {
-        System.out.println("getting stats for $id")
+        logger.info("getting stats for $id")
         return webClient
             .get()
             .uri{builder -> builder
