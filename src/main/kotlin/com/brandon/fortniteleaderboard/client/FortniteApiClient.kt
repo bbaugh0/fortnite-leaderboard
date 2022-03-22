@@ -24,7 +24,7 @@ class FortniteApiClient (
         ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    @Cacheable(cacheNames = ["responses"], key = "#id")
+//    @Cacheable(cacheNames = ["responses"], key = "#id")
     fun getPlayerStats(id: String): FortniteModel? {
         logger.info("getting stats for $id")
         return webClient

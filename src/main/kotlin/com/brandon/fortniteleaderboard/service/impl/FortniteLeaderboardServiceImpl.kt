@@ -3,6 +3,7 @@ package com.brandon.fortniteleaderboard.service.impl
 import com.brandon.fortniteleaderboard.client.FortniteApiClient
 import com.brandon.fortniteleaderboard.dto.GameModeStats
 import com.brandon.fortniteleaderboard.model.FortniteModel
+import com.brandon.fortniteleaderboard.model.GameModeModel
 import com.brandon.fortniteleaderboard.service.FortniteLeaderboardService
 import lombok.extern.slf4j.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,22 +24,26 @@ class FortniteLeaderboardServiceImpl(
         return gamertags.parallelStream().map{ value ->  client.getPlayerStats(value) }.collect(Collectors.toList())
     }
 
+    private fun convertModelToStats(model: GameModeModel, id: String): GameModeStats {
+        return GameModeStats(
+            id,
+            model.score.valueInt,
+            model.kills.valueInt,
+            model.top1.valueInt,
+            model.matches.valueInt,
+            model.kpm.value.toDouble(),
+            model.kpg.value.toDouble(),
+            model.scorePerMatch.value.toDouble(),
+            model.winRatio.value.toDouble()
+        )
+    }
+
     private fun getSoloLeaderboardStats(models: List<FortniteModel?>): List<GameModeStats> {
         try {
-            var dtos = models.parallelStream().map { value ->
-                GameModeStats(
-                    value!!.epicUserHandle,
-                    value.stats.solos.score.valueInt,
-                    value.stats.solos.kills.valueInt,
-                    value.stats.solos.top1.valueInt,
-                    value.stats.solos.matches.valueInt,
-                    value.stats.solos.kpm.value.toDouble(),
-                    value.stats.solos.kpg.value.toDouble(),
-                    value.stats.solos.scorePerMatch.value.toDouble(),
-                    value.stats.solos.winRatio.value.toDouble()
-                )
+            val dtos = models.parallelStream().map { value ->
+                convertModelToStats(value!!.stats.solos, value.epicUserHandle)
             }.collect(Collectors.toList())
-            dtos = dtos.stream().sorted { o1, o2 -> o2.wins.compareTo(o1.wins) }.collect(Collectors.toList())
+            dtos.sortWith(compareBy<GameModeStats?>({it!!.wins}, {it!!.winRatio}).reversed())
 
             for (stats: GameModeStats in dtos) {
                 when (stats.id) {
@@ -54,20 +59,10 @@ class FortniteLeaderboardServiceImpl(
 
     private fun getDuosLeaderboardStats(models: List<FortniteModel?>): List<GameModeStats> {
         try {
-            var dtos = models.parallelStream().map { value ->
-                GameModeStats(
-                    value!!.epicUserHandle,
-                    value.stats.duos.score.valueInt,
-                    value.stats.duos.kills.valueInt,
-                    value.stats.duos.top1.valueInt,
-                    value.stats.duos.matches.valueInt,
-                    value.stats.duos.kpm.value.toDouble(),
-                    value.stats.duos.kpg.value.toDouble(),
-                    value.stats.duos.scorePerMatch.value.toDouble(),
-                    value.stats.duos.winRatio.value.toDouble()
-                )
+            val dtos = models.parallelStream().map { value ->
+                convertModelToStats(value!!.stats.duos, value.epicUserHandle)
             }.collect(Collectors.toList())
-            dtos = dtos.stream().sorted { o1, o2 -> o2.wins.compareTo(o1.wins) }.collect(Collectors.toList())
+            dtos.sortWith(compareBy<GameModeStats?>({it!!.wins}, {it!!.winRatio}).reversed())
 
             for (stats: GameModeStats in dtos) {
                 when (stats.id) {
@@ -83,20 +78,10 @@ class FortniteLeaderboardServiceImpl(
 
     private fun getTriosLeaderboardStats(models: List<FortniteModel?>): List<GameModeStats> {
         try {
-            var dtos = models.parallelStream().map { value ->
-                GameModeStats(
-                    value!!.epicUserHandle,
-                    value.stats.trios.score.valueInt,
-                    value.stats.trios.kills.valueInt,
-                    value.stats.trios.top1.valueInt,
-                    value.stats.trios.matches.valueInt,
-                    value.stats.trios.kpm.value.toDouble(),
-                    value.stats.trios.kpg.value.toDouble(),
-                    value.stats.trios.scorePerMatch.value.toDouble(),
-                    value.stats.trios.winRatio.value.toDouble()
-                )
+            val dtos = models.parallelStream().map { value ->
+                convertModelToStats(value!!.stats.trios, value.epicUserHandle)
             }.collect(Collectors.toList())
-            dtos = dtos.stream().sorted { o1, o2 -> o2.wins.compareTo(o1.wins) }.collect(Collectors.toList())
+            dtos.sortWith(compareBy<GameModeStats?>({it!!.wins}, {it!!.winRatio}).reversed())
 
             for (stats: GameModeStats in dtos) {
                 when (stats.id) {
@@ -112,20 +97,10 @@ class FortniteLeaderboardServiceImpl(
 
     private fun getSquadsLeaderboardStats(models: List<FortniteModel?>): List<GameModeStats> {
         try {
-            var dtos = models.parallelStream().map { value ->
-                GameModeStats(
-                    value!!.epicUserHandle,
-                    value.stats.squads.score.valueInt,
-                    value.stats.squads.kills.valueInt,
-                    value.stats.squads.top1.valueInt,
-                    value.stats.squads.matches.valueInt,
-                    value.stats.squads.kpm.value.toDouble(),
-                    value.stats.squads.kpg.value.toDouble(),
-                    value.stats.squads.scorePerMatch.value.toDouble(),
-                    value.stats.squads.winRatio.value.toDouble()
-                )
+            val dtos = models.parallelStream().map { value ->
+                convertModelToStats(value!!.stats.squads, value.epicUserHandle)
             }.collect(Collectors.toList())
-            dtos = dtos.stream().sorted { o1, o2 -> o2.wins.compareTo(o1.wins) }.collect(Collectors.toList())
+            dtos.sortWith(compareBy<GameModeStats?>({it!!.wins}, {it!!.winRatio}).reversed())
 
             for (stats: GameModeStats in dtos) {
                 when (stats.id) {

@@ -16,10 +16,10 @@ class SchedulingConfig {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    @Scheduled(cron = "* 0/30 * * * *")
-    @CacheEvict("responses")
-    open fun cacheEvict() {
-        logger.info("Evicting cache")
-        // Nothing needed here
-    }
+//    @Scheduled(cron = "* 0/30 * * * *")
+//    @CacheEvict("responses")
+//    open fun cacheEvict() {
+//        logger.info("Evicting cache")
+//        // Nothing needed here
+//    }
 }
